@@ -103,6 +103,11 @@ data:
       pprof:
         port: 7936
 
+      {{- if $.Values.global.tls }}
+      tls:
+      {{- toYaml $.Values.global.tls | nindent 8}}  
+      {{- end }}
+
 
     services:
       frontend:
