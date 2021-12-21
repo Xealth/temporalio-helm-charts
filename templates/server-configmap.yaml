@@ -111,6 +111,11 @@ data:
           timerType: histogram
           listenAddress: "0.0.0.0:9090"
 
+      {{- if $.Values.global.tls }}
+      tls:
+      {{- toYaml $.Values.global.tls | nindent 8}}  
+      {{- end }}
+
 
     services:
       frontend:
