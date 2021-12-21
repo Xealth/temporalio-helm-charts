@@ -37,6 +37,7 @@ spec:
         http:
           paths:
             - path: /{{ rest $url | join "/" }}
+              pathType: Prefix
               backend:
                 serviceName: {{ include "temporal.fullname" $ }}-web
                 servicePort: {{ $.Values.web.service.port }}
