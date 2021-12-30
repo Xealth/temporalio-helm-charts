@@ -72,6 +72,9 @@ spec:
           command: ['sh', '-c', 'until curl --silent --fail --user {{ $.Values.elasticsearch.username }}:{{ $.Values.elasticsearch.password }} {{ $.Values.elasticsearch.scheme }}://{{ $.Values.elasticsearch.host }}:{{ $.Values.elasticsearch.port }}/{{ $.Values.elasticsearch.visibilityIndex }} 2>&1 > /dev/null; do echo waiting for elasticsearch index to become ready; sleep 1; done;']
         {{- end }}
       {{- end }}
+      {{- if $.Values.server.serviceAccount }}
+      serviceAccountName: {{ $.Values.server.serviceAccount }}
+      {{- end }}
       containers:
         - name: {{ $.Chart.Name }}-{{ $service }}
           image: "{{ $.Values.server.image.repository }}:{{ $.Values.server.image.tag }}"
