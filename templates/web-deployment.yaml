@@ -44,6 +44,9 @@ spec:
         {{- if $.Values.web.additionalVolumes }}
         {{- toYaml $.Values.web.additionalVolumes | nindent 8}}  
         {{- end }}
+      {{- if $.Values.web.serviceAccount }}
+      serviceAccountName: {{ $.Values.web.serviceAccount }}
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}-web
           image: "{{ .Values.web.image.repository }}:{{ .Values.web.image.tag }}"

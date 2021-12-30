@@ -20,6 +20,7 @@ global:
   tls: {}
 
 server:
+  serviceAccount:
   enabled: true
   sidecarContainers:
   image:
@@ -254,6 +255,7 @@ admintools:
   affinity: {}
 
 web:
+  serviceAccount:
   enabled: true
   config:
     # server/config.yml file content
