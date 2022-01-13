@@ -37,6 +37,12 @@ spec:
         - name: {{ .Chart.Name }}-web-config
           configMap:
             name: {{ include "temporal.componentname" (list . "web") }}-config
+        {{- if $.Values.web.additionalVolumes }}
+        {{- toYaml $.Values.web.additionalVolumes | nindent 8}}  
+        {{- end }}
+      {{- if $.Values.web.serviceAccount }}
+      serviceAccountName: {{ $.Values.web.serviceAccount }}
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}-web
           image: "{{ .Values.web.image.repository }}:{{ .Values.web.image.tag }}"
@@ -44,10 +50,16 @@ spec:
           env:
             - name: TEMPORAL_GRPC_ENDPOINT
               value: "{{ include "temporal.fullname" . }}-frontend.{{ .Release.Namespace }}.svc:{{ .Values.server.frontend.service.port }}"
+            {{- if $.Values.web.additionalEnv }}
+            {{- toYaml $.Values.web.additionalEnv | nindent 12}}  
+            {{- end }}
           volumeMounts:
             - name: {{ .Chart.Name }}-web-config
               mountPath: /usr/app/server/config.yml
               subPath: config.yml
+            {{- if $.Values.web.additionalVolumeMounts }}
+            {{- toYaml $.Values.web.additionalVolumeMounts | nindent 12}}  
+            {{- end }}
           ports:
             - name: http
               containerPort: 8088
