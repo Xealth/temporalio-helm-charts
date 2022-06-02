@@ -8,6 +8,16 @@ debug: false
 global:
   # Used by backend (web has additionalEnv)
   tls: {}
+# Custom Service account management
+serviceAccount:
+  # Whether to create service account or not
+  create: false
+
+  # Name of the service account, default: temporal.fullname
+  name:
+
+  # extraAnnotations would let users add additional annotations
+  extraAnnotations:
 
 server:
   serviceAccount:
@@ -15,7 +25,7 @@ server:
   sidecarContainers:
   image:
     repository: temporalio/server
-    tag: 1.14.0
+    tag: 1.16.2
     pullPolicy: IfNotPresent
 
   # Global default settings (can be overridden per service)
@@ -56,7 +66,9 @@ server:
     prometheus:
       timerType: histogram
   podAnnotations: {}
-  resources: {}
+  podLabels: {}
+  resources:
+    {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
@@ -163,6 +175,7 @@ server:
       prometheus: {}
       # timerType: histogram
     podAnnotations: {}
+    podLabels: {}
     resources: {}
     nodeSelector: {}
     tolerations: []
@@ -181,6 +194,7 @@ server:
       prometheus: {}
       # timerType: histogram
     podAnnotations: {}
+    podLabels: {}
     resources: {}
     nodeSelector: {}
     tolerations: []
@@ -199,6 +213,7 @@ server:
       prometheus: {}
       # timerType: histogram
     podAnnotations: {}
+    podLabels: {}
     resources: {}
     nodeSelector: {}
     tolerations: []
@@ -217,6 +232,7 @@ server:
       prometheus: {}
       # timerType: histogram
     podAnnotations: {}
+    podLabels: {}
     resources: {}
     nodeSelector: {}
     tolerations: []
@@ -226,13 +242,14 @@ admintools:
   enabled: true
   image:
     repository: temporalio/admin-tools
-    tag: 1.14.0
+    tag: 1.16.2
     pullPolicy: IfNotPresent
 
   service:
     type: ClusterIP
     port: 22
     annotations: {}
+  podLabels: {}
   nodeSelector: {}
   tolerations: []
   affinity: {}
@@ -255,10 +272,12 @@ web:
 
   image:
     repository: temporalio/web
-    tag: 1.13.0
+    tag: 1.15.0
     pullPolicy: IfNotPresent
 
   service:
+    # set type to NodePort if access to web needs access from outside the cluster
+    # for more info see https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
     type: ClusterIP
     port: 8088
     annotations: {}
@@ -280,6 +299,7 @@ web:
     #      - chart-example.local
 
   podAnnotations: {}
+  podLabels: {}
 
   resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
